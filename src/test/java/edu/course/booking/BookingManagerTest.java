@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
+import static org.junit.jupiter.api.Assertions.assertNull;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,6 +20,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.Arguments;
 import java.util.stream.Stream;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 @ExtendWith(MockitoExtension.class)
 class BookingManagerTest {
 
@@ -160,8 +162,7 @@ void invalidBookingRequestShouldBeRejected(
             result.status()
     );
 
-    assertEquals(null, result.transactionId());
-
+assertNull(result.transactionId());
     verifyNoInteractions(
             paymentGateway,
             eventRepository,
@@ -272,7 +273,7 @@ void invalidTransactionIdShouldNotConfirmBooking(
             result.status()
     );
 
-    assertEquals(null, result.transactionId());
+            assertEquals(null, result.transactionId());
 
     verify(eventRepository).isSoldOut("E001");
     verify(paymentGateway).processPayment("C001", 3000L);
