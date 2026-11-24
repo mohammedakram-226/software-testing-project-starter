@@ -34,10 +34,12 @@ public BookingResult book(BookingRequest request) {
     eventRepository.saveBooking(booking);
     notificationService.sendConfirmation(booking);
 
-    return new BookingResult(
-            BookingResult.Status.SUCCESS,
-            transactionId
-    );
+    BookingResult result = new BookingResult(
+        BookingResult.Status.SUCCESS,
+        transactionId
+);
+
+return result;
 }
 
 }
