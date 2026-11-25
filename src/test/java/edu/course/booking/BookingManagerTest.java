@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
+import static org.mockito.Mockito.verifyNoInteractions;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -55,4 +55,22 @@ class BookingManagerTest {
         verify(eventRepository).saveBooking(expectedBooking);
         verify(notificationService).sendConfirmation(expectedBooking);
     }
+@Test
+void bookingWithZeroTicketsShouldBeRejected() {
+    BookingRequest request =
+            new BookingRequest("C001", "E001", 0, 1500);
+
+    BookingResult result = bookingManager.book(request);
+
+    assertEquals(
+            BookingResult.Status.INVALID_REQUEST,
+            result.status()
+    );
+
+    verifyNoInteractions(
+            paymentGateway,
+            eventRepository,
+            notificationService
+    );
+}
 }
